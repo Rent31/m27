@@ -1,0 +1,104 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Fredoka", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-logo: "Exo 2", "Fredoka", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.15 0.03 262);
+  --foreground: oklch(0.96 0.012 85);
+  --card: oklch(0.21 0.035 262);
+  --card-foreground: oklch(0.96 0.012 85);
+  --popover: oklch(0.21 0.035 262);
+  --popover-foreground: oklch(0.96 0.012 85);
+  --primary: oklch(0.74 0.17 52);
+  --primary-foreground: oklch(0.18 0.03 262);
+  --secondary: oklch(0.83 0.11 178);
+  --secondary-foreground: oklch(0.18 0.03 262);
+  --muted: oklch(0.28 0.03 262);
+  --muted-foreground: oklch(0.74 0.03 250);
+  --accent: oklch(0.33 0.05 262);
+  --accent-foreground: oklch(0.96 0.012 85);
+  --destructive: oklch(0.66 0.21 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.84 0.15 85);
+  --success: oklch(0.8 0.16 150);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.74 0.17 52);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); overflow: hidden; }
+  h1, h2, h3, h4 { font-family: var(--font-display); }
+}
+
+@utility panel {
+  background-color: color-mix(in oklab, var(--card) 88%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px -10px oklch(0 0 0 / 60%);
+}
+
+@keyframes floaty { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+@keyframes pulse-red { 0%,100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--destructive) 60%, transparent) } 50% { box-shadow: 0 0 0 10px transparent } }
+@keyframes shake { 0%,100% { transform: translateX(0) } 25% { transform: translateX(-6px) } 75% { transform: translateX(6px) } }
+.anim-float { animation: floaty 3s ease-in-out infinite; }
+.anim-alert { animation: pulse-red 1.4s ease-in-out infinite; }
+.anim-shake { animation: shake 0.3s ease-in-out 2; }
+
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+@keyframes light-sweep { 0%, 70% { background-position: -150% 0 } 100% { background-position: 250% 0 } }
+@keyframes dot-pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.35 } }
+@keyframes screen-in { from { opacity: 0; filter: blur(4px) } to { opacity: 1; filter: none } }
+.anim-fade-up { animation: fade-up 0.7s cubic-bezier(.2,.8,.2,1) both; }
+.anim-dot { animation: dot-pulse 1.8s ease-in-out infinite; }
+.anim-screen-in { animation: screen-in 0.45s ease-out both; }
+.logo-sweep {
+  background-image: linear-gradient(100deg, transparent 40%, color-mix(in oklab, var(--foreground) 55%, transparent) 50%, transparent 60%);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: light-sweep 6s ease-in-out infinite;
+}
+.logo-glow { text-shadow: 0 1px 0 color-mix(in oklab, var(--foreground) 30%, transparent), 0 6px 18px oklch(0 0 0 / 55%), 0 0 28px color-mix(in oklab, var(--primary) 10%, transparent); }
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+@media (prefers-reduced-motion: reduce) { .anim-float, .anim-dot, .logo-sweep { animation: none; } }
